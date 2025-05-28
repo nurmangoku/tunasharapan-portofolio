@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
+import sekolah from '../assets/sekolah.jpeg';
 
 const Hero = () => {
   const scrollToProfile = () => {
@@ -14,7 +15,7 @@ const Hero = () => {
     <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
       <div className="absolute inset-0">
         <img
-          src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200&h=800&fit=crop"
+          src={sekolah}
           alt="Sekolah"
           className="w-full h-full object-cover"
         />
@@ -22,15 +23,15 @@ const Hero = () => {
       </div>
       
       <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
-        <h1 className="text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
-          SMK Nusantara
+        <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">
+          SD NEGERI TUNAS HARAPAN
         </h1>
         <p className="text-xl md:text-2xl mb-8 animate-fade-in opacity-90">
           Membangun Generasi Unggul dan Berkarakter untuk Masa Depan Indonesia
         </p>
         <div className="space-y-4 animate-fade-in">
           <p className="text-lg opacity-80">
-            Sekolah Menengah Kejuruan Terdepan dengan Teknologi Modern
+            Sekolah Dasar Negeri Terdepan dengan Teknologi Modern
           </p>
           <button
             onClick={scrollToProfile}

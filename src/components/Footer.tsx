@@ -11,27 +11,35 @@ const Footer = () => {
           <div className="lg:col-span-2">
             <h3 className="text-2xl font-bold mb-4">SMK Nusantara</h3>
             <p className="text-gray-300 mb-6 leading-relaxed">
-              Sekolah Menengah Kejuruan terdepan yang berkomitmen menghasilkan lulusan 
+              Sekolah Dasar Negeri terdepan yang berkomitmen menghasilkan lulusan 
               berkualitas, berkarakter, dan siap bersaing di era globalisasi.
             </p>
             <div className="space-y-3">
               <div className="flex items-center space-x-3">
                 <MapPin className="w-5 h-5 text-blue-400" />
                 <span className="text-gray-300">
-                  Jl. Pendidikan No. 123, Kota Nusantara, Indonesia 12345
+                  Jl. Jend. H. Amir Machmud No. 108 RT.03 RW.023 Kel. Cibeureum Kec. Cimahi Selatan - Kota Cimahi
                 </span>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-5 h-5 text-blue-400" />
-                <span className="text-gray-300">(021) 1234-5678</span>
+                <span className="text-gray-300">0831 6590 6773 (Dani Sukandar)</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Phone className="w-5 h-5 text-blue-400" />
+                <span className="text-gray-300">0877 2201 3139 (Indra Lukman Purnama, S.Pd)</span>
+              </div>
+              <div className="flex items-center space-x-3">
+                <Phone className="w-5 h-5 text-blue-400" />
+                <span className="text-gray-300">0822 1647 0242 (Al Maryani, S.Pd)</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-blue-400" />
-                <span className="text-gray-300">info@smknusantara.ac.id</span>
+                <span className="text-gray-300">sdntunasharapancmh@gmail.com</span>
               </div>
               <div className="flex items-center space-x-3">
                 <Globe className="w-5 h-5 text-blue-400" />
-                <span className="text-gray-300">www.smknusantara.ac.id</span>
+                <span className="text-gray-300">sdntunasharapan.vercel.app</span>
               </div>
             </div>
           </div>
@@ -93,9 +101,8 @@ const Footer = () => {
             </div>
             <div className="mt-6">
               <h5 className="font-semibold mb-2">Jam Operasional</h5>
-              <p className="text-gray-300 text-sm">Senin - Jumat: 07:00 - 16:00</p>
-              <p className="text-gray-300 text-sm">Sabtu: 07:00 - 12:00</p>
-              <p className="text-gray-300 text-sm">Minggu: Tutup</p>
+              <p className="text-gray-300 text-sm">Senin - Jumat: 07:00 - 17:00</p>
+              <p className="text-gray-300 text-sm">Sabtu & Minggu: Tutup</p>
             </div>
           </div>
         </div>
@@ -103,7 +110,7 @@ const Footer = () => {
         <div className="border-t border-gray-700 mt-12 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <p className="text-gray-400 text-sm">
-              © 2024 SMK Nusantara. Semua hak cipta dilindungi.
+              © 2025 Nurman tajir. Semua hak cipta dilindungi.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="text-gray-400 hover:text-white text-sm transition-colors">

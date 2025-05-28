@@ -39,8 +39,8 @@ const Header = () => {
     }`}>
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <div className="text-2xl font-bold text-blue-900">
-            SMK Nusantara
+          <div className="text-2xl font-bold text-gray-900">
+            SDN Tunas Harapan
           </div>
           
           {/* Desktop Menu */}
@@ -49,7 +49,9 @@ const Header = () => {
               <button
                 key={item.id}
                 onClick={() => scrollToSection(item.id)}
-                className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium"
+                className={`transition-colors duration-200 font-medium ${
+                  isScrolled ? 'text-gray-700 hover:text-blue-600' : 'text-white hover:text-blue-300'
+                }`}
               >
                 {item.label}
               </button>

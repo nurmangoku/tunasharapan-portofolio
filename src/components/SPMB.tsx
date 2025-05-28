@@ -20,11 +20,6 @@ const SPMB = () => {
       description: "Verifikasi kelengkapan berkas pendaftaran"
     },
     {
-      icon: Award,
-      title: "Tes Masuk",
-      description: "Mengikuti tes tertulis dan wawancara"
-    },
-    {
       icon: CheckCircle,
       title: "Pengumuman",
       description: "Hasil seleksi diumumkan melalui website"
@@ -37,21 +32,18 @@ const SPMB = () => {
   ];
 
   const requirements = [
-    "Ijazah SMP/MTs atau surat keterangan lulus",
-    "SKHUN (Surat Keterangan Hasil Ujian Nasional)",
-    "Akta kelahiran atau surat kenal lahir",
-    "Kartu Keluarga (KK) dan KTP orang tua",
-    "Pas foto 3x4 sebanyak 4 lembar",
-    "Surat keterangan sehat dari dokter",
-    "Surat keterangan berkelakuan baik dari sekolah asal",
-    "Fotokopi raport semester 5 dan 6"
+    "1. Kartu Keluarga",
+    "2. Akte Kelahiran",
+    "3. KTP Orang Tua",
+    "4. Titik Koordinat Rumah",
+    "5. Kartu bantuan (KKS, PKH) khusus jalur afirmasi"
   ];
 
   return (
     <section id="spmb" className="py-20 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">SPMB (Seleksi Penerimaan Mahasiswa Baru)</h2>
+          <h2 className="text-4xl font-bold text-gray-800 mb-4">SPMB (Seleksi Penerimaan Murid Baru)</h2>
           <p className="text-lg text-gray-600">Informasi lengkap proses pendaftaran</p>
         </div>
 
@@ -97,11 +89,19 @@ const SPMB = () => {
 
             <div className="mt-8 p-6 bg-blue-600 text-white rounded-2xl">
               <h4 className="text-xl font-bold mb-4">Jadwal Penting</h4>
+              <div className="flex">
+              <div className="space-y-2 mx-7">
+                <h5><strong>Tahap I – Jalur Afirmasi & Mutasi:</strong></h5>
+                  <p><strong>Pendaftaran:</strong> 2–5 Juni 2025</p>
+                  <p><strong>Pengumuman:</strong> 10 Juni 2025</p>
+                  <p><strong>Daftar Ulang:</strong> 11–13 Juni 2025</p> 
+              </div>
               <div className="space-y-2">
-                <p><strong>Pendaftaran:</strong> 1 Januari - 28 Februari 2024</p>
-                <p><strong>Tes Masuk:</strong> 5 - 7 Maret 2024</p>
-                <p><strong>Pengumuman:</strong> 15 Maret 2024</p>
-                <p><strong>Daftar Ulang:</strong> 20 - 25 Maret 2024</p>
+                <h5><strong>Tahap II – Jalur Domisili:</strong></h5>
+                  <p><strong>Pendaftaran:</strong> 14–19 Juni 2025</p>
+                  <p><strong>Pengumuman:</strong> 20 Juni 2025</p>
+                  <p><strong>Daftar Ulang:</strong> 23–25 Juni 2025</p> 
+              </div>
               </div>
             </div>
           </div>

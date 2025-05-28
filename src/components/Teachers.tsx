@@ -5,81 +5,81 @@ import { Mail, Phone } from 'lucide-react';
 const Teachers = () => {
   const teachers = [
     {
-      name: "Dr. Ahmad Suharto, S.Pd., M.Pd.",
+      name: "Dede Jaenudin, S.Pd.SD.",
       position: "Kepala Sekolah",
       subject: "Manajemen Pendidikan",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
-      email: "ahmad.suharto@smknusantara.ac.id"
+      image: "/images/dede.jpeg",
+      email: ""
     },
     {
-      name: "Siti Nurhaliza, S.Kom., M.T.",
+      name: "Ai Maryani, S.Pd.",
       position: "Guru",
-      subject: "Teknik Komputer & Jaringan",
-      image: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=300&h=300&fit=crop&crop=face",
-      email: "siti.nurhaliza@smknusantara.ac.id"
+      subject: "Kelas 1",
+      image: "/images/ai.jpeg",
+      email: ""
     },
     {
-      name: "Budi Santoso, S.T., M.Eng.",
+      name: "Irman Artobatama, S.Pd.",
       position: "Guru",
-      subject: "Teknik Otomotif",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
-      email: "budi.santoso@smknusantara.ac.id"
+      subject: "Kelas 2",
+      image: "/images/irman.jpeg",
+      email: ""
     },
     {
-      name: "Maya Sari, S.E., M.M.",
+      name: "Henni Widari, S.Pd.",
       position: "Guru",
-      subject: "Akuntansi & Keuangan",
-      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
-      email: "maya.sari@smknusantara.ac.id"
+      subject: "Kelas 3",
+      image: "/images/heni.jpeg",
+      email: ""
     },
     {
-      name: "Rizki Pratama, S.Pd., M.Pd.",
+      name: "Rani Stefani, S.Pd.",
       position: "Guru",
-      subject: "Multimedia",
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&fit=crop&crop=face",
-      email: "rizki.pratama@smknusantara.ac.id"
+      subject: "Kelas 4",
+      image: "/images/rani.jpeg",
+      email: ""
     },
     {
-      name: "Dewi Lestari, S.Pd., M.Pd.",
+      name: "Indra Lukman Purnama, S.Pd.",
       position: "Guru",
-      subject: "Bahasa Indonesia",
-      image: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?w=300&h=300&fit=crop&crop=face",
-      email: "dewi.lestari@smknusantara.ac.id"
+      subject: "Kelas 5",
+      image: "/images/indra.jpeg",
+      email: ""
     },
     {
-      name: "Andi Wijaya, S.Si., M.Pd.",
+      name: "Via Parizsal, S.Pd.",
       position: "Guru",
-      subject: "Matematika",
-      image: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=300&h=300&fit=crop&crop=face",
-      email: "andi.wijaya@smknusantara.ac.id"
+      subject: "Kelas 5",
+      image: "/images/via.jpeg",
+      email: ""
     },
     {
-      name: "Fatimah Zahra, S.Pd., M.Pd.",
+      name: "Yati Mulyati, S.Pd.",
       position: "Guru",
-      subject: "Bahasa Inggris",
-      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&h=300&fit=crop&crop=face",
-      email: "fatimah.zahra@smknusantara.ac.id"
+      subject: "PJOK",
+      image:"/images/yati.jpeg",
+      email: ""
     },
     {
-      name: "Hendra Gunawan, S.Pd.I., M.Pd.I.",
+      name: "Nurman Tajir, S.Pd.I.",
       position: "Guru",
       subject: "Pendidikan Agama Islam",
-      image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&h=300&fit=crop&crop=face",
-      email: "hendra.gunawan@smknusantara.ac.id"
+      image: "/images/nurman.jpeg",
+      email: ""
     },
     {
-      name: "Linda Permata, S.Pd., M.Pd.",
-      position: "Guru",
-      subject: "Seni Budaya",
-      image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=300&h=300&fit=crop&crop=face",
-      email: "linda.permata@smknusantara.ac.id"
+      name: "Dani Sukandar",
+      position: "Tenaga Kependidikan",
+      subject: "Operator",
+      image: "/images/dani.jpeg",
+      email: ""
     },
     {
-      name: "Tommy Prasetyo, S.Pd., M.Pd.",
-      position: "Guru",
-      subject: "Pendidikan Jasmani",
-      image: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=300&h=300&fit=crop&crop=face",
-      email: "tommy.prasetyo@smknusantara.ac.id"
+      name: "Dudi Hamaludin",
+      position: "Penjaga Sekolah",
+      subject: "Keamanan dan Kebersihan",
+      image: "/images/dudi.jpeg",
+      email: ""
     }
   ];
 
@@ -111,7 +111,7 @@ const Teachers = () => {
                 <p className="text-gray-600 text-sm mb-4">{teacher.subject}</p>
                 <div className="flex items-center space-x-3">
                   <a
-                    href={`mailto:${teacher.email}`}
+                    //href={`mailto:${teacher.email}`}
                     className="text-blue-500 hover:text-blue-700 transition-colors"
                   >
                     <Mail size={18} />
