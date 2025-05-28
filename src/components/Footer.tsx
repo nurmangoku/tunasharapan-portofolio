@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Informasi Sekolah */}
           <div className="lg:col-span-2">
-            <h3 className="text-2xl font-bold mb-4">SMK Nusantara</h3>
+            <h3 className="text-2xl font-bold mb-4">SDN TUNAS HARAPAN</h3>
             <p className="text-gray-300 mb-6 leading-relaxed">
               Sekolah Dasar Negeri terdepan yang berkomitmen menghasilkan lulusan 
               berkualitas, berkarakter, dan siap bersaing di era globalisasi.
