@@ -4,26 +4,13 @@ import Footer from '../components/Footer';
 import AnnouncementCard from '../components/AnnouncementCard';
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAnnouncements } from '../contexts/AnnouncementsContext'; // <-- BARU: Impor hook
 
-// Data pengumuman
-const sampleAnnouncements = [
-   {
-    id: '1',
-    title: 'HARI LAHIR PANCASILA',
-    date: '01 Juni 2025',
-    image: '/images/pengumuman1.jpeg',
-    content: 'Dengan segenap semangat kebangsaan yang membara, marilah kita sambut fajar peringatan Hari Lahir Pancasila. Momen bersejarah ini bukan sekadar perayaan seremonial, melainkan panggilan jiwa untuk kembali merenungkan dan mengamalkan nilai-nilai luhur yang terkandung di dalamnya. Sebagaimana tunas-tunas muda di SD Negeri Tunas Harapan yang senantiasa bersemi membawa asa, mari kita rajut kembali benang-benang persatuan, kita eratkan simpul-simpul kesatuan, demi Indonesia yang lebih kokoh dan bermartabat. Selamat Hari Pancasila! Semoga semangatnya senantiasa menerangi langkah kita dalam membangun bangsa.',
-  },
-   {
-    id: '2',
-    title: 'Agenda SD NEGERI TUNAS HARAPAN Pekan ini',
-    date: '29 Mei 2025',
-    image: '/images/pengumuman2.jpeg',
-    content: 'Oke, Tunas Harapan Squad, check it out! Pekan ini ada beberapa info penting nih: Kamis kemarin, 29 Mei 2025, kita udah nikmatin libur Hari Isa Al Masih, lanjut Jumat, 30 Mei 2025, full chill dengan cuti bersama. Nah, get ready buat Senin besok, 02 Juni 2025, karena ada momen spesial pengumuman kelulusan buat kakak-kakak keren Kelas 6, sementara adik-adik Kelas 1-5 tetap semangat Belajar Dari Rumah (BDR) ya! Terus, jangan lupa, mulai hari ini, 01 Juni sampai 10 Juni 2025, waktunya fokus dan do your best buat Penilaian Sumatif Akhir Tahun (PSAT) Kelas 1-5. Semangat semuanya!',
-  },
-];
+// sampleAnnouncements dihapus dari sini
 
 const AnnouncementsPage = () => {
+  const { announcements } = useAnnouncements(); // <-- BARU: Gunakan hook
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
       <Header />
@@ -43,15 +30,15 @@ const AnnouncementsPage = () => {
               </p>
             </div>
 
-            {sampleAnnouncements.length > 0 ? (
+            {announcements.length > 0 ? ( // <-- BARU: Gunakan 'announcements' dari context
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {sampleAnnouncements.map((announcement) => (
+                {announcements.map((announcement) => ( // <-- BARU: Gunakan 'announcements' dari context
                   <Link key={announcement.id} to={`/pengumuman/${announcement.id}`} className="block hover:no-underline focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-xl">
                     <AnnouncementCard
                       id={announcement.id}
                       title={announcement.title}
                       date={announcement.date}
-                      image={announcement.image} // Memastikan 'image' yang dikirim
+                      image={announcement.image}
                       content={announcement.content}
                     />
                   </Link>

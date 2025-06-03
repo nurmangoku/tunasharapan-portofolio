@@ -2,24 +2,24 @@ import React from 'react';
 import { ChevronDown, Newspaper, ExternalLink } from 'lucide-react';
 import sekolah from '../assets/sekolah.jpeg'; 
 import { Link } from 'react-router-dom';
+import { useAnnouncements } from '../contexts/AnnouncementsContext'; // <-- BARU: Impor hook
+import { Announcement } from '../types'; // Impor tipe Announcement
 
-const heroAnnouncements = [
-  {
-    id: '1',
-    title: 'Pengumuman Libur Sekolah Menyambut Idul Fitri',
-    excerpt: 'Diberitahukan kepada seluruh siswa dan orang tua murid SDN Tunas Harapan, bahwa kegiatan belajar mengajar akan diliburkan...',
-    link: '/pengumuman/1',
-  },
-  {
-    id: '2',
-    title: 'Jadwal Ujian Akhir Semester Genap',
-    excerpt: 'Berikut adalah jadwal pelaksanaan Ujian Akhir Semester (UAS) Genap untuk tahun ajaran 2024/2025...',
-    link: '/pengumuman/2',
-  }
-];
-
+// heroAnnouncements dihapus dari sini, akan diambil dari context
 
 const Hero = () => {
+  const { announcements } = useAnnouncements(); // <-- BARU: Gunakan hook
+
+  // Ambil 2 pengumuman pertama untuk Hero, atau sesuai kebutuhan
+  const heroAnnouncementsToDisplay: Announcement[] = announcements.slice(0, 2).map(ann => ({
+    ...ann, // Salin semua properti dari announcement
+    // Pastikan excerpt dan link ada jika dibutuhkan secara eksplisit oleh komponen Link di bawah
+    // Jika 'ann.excerpt' atau 'ann.link' sudah ada dari context, tidak perlu didefinisikan ulang
+    excerpt: ann.excerpt || ann.content.substring(0, 75) + '...', // Fallback jika excerpt tidak ada
+    link: ann.link || `/pengumuman/${ann.id}`, // Fallback jika link tidak ada
+  }));
+
+
   const scrollToProfile = () => {
     const element = document.getElementById('profile');
     if (element) {
@@ -66,7 +66,7 @@ const Hero = () => {
         </div>
       </div>
 
-      {heroAnnouncements.length > 0 && (
+      {heroAnnouncementsToDisplay.length > 0 && ( // <-- BARU: Gunakan heroAnnouncementsToDisplay
         <div className="relative z-10 w-full max-w-4xl mx-auto px-4 mt-8 md:mt-12 animate-fade-in-up animation-delay-300">
           <div className="bg-white/10 backdrop-blur-md p-6 rounded-xl shadow-2xl border border-white/20">
             <div className="flex items-center text-white mb-5">
@@ -74,9 +74,9 @@ const Hero = () => {
               <h3 className="text-2xl font-semibold">Pengumuman Terbaru</h3>
             </div>
             <div className="space-y-4">
-              {heroAnnouncements.slice(0, 2).map(ann => (
+              {heroAnnouncementsToDisplay.map(ann => ( // <-- BARU: Gunakan heroAnnouncementsToDisplay
                 <div key={ann.id} className="bg-white/20 p-4 rounded-lg hover:bg-white/30 transition-colors duration-300 group">
-                  <Link to={ann.link} className="block">
+                  <Link to={ann.link!} className="block"> {/* Tambahkan '!' jika yakin ann.link selalu ada */}
                     <h4 className="font-semibold text-white text-lg mb-1 group-hover:text-blue-200 transition-colors">{ann.title}</h4>
                     <p className="text-sm text-gray-200 truncate mb-2">{ann.excerpt}</p>
                     <div className="text-xs text-blue-300 group-hover:text-blue-100 mt-1 inline-flex items-center font-medium transition-colors">
@@ -86,8 +86,7 @@ const Hero = () => {
                 </div>
               ))}
             </div>
-            {/* FIX: Menggunakan heroAnnouncements.length untuk kondisi */}
-            {heroAnnouncements.length > 0 && ( 
+            {announcements.length > 0 && ( // Cek dari semua announcements untuk link "Lihat Semua"
                  <Link to="/pengumuman" className="block text-center mt-6 text-blue-300 hover:text-white font-semibold transition-colors duration-300 py-2 px-4 rounded-md hover:bg-white/20 text-sm">
                      Lihat Semua Pengumuman &rarr;
                  </Link>
