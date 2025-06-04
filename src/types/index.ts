@@ -14,14 +14,23 @@ export interface User {
   email?: string;
 }
 
-// BARU: Tipe untuk data Guru
 export interface Teacher {
-  id: string; // UUID dari Supabase
+  id: string; 
   name: string;
-  position: string; // Jabatan (Kepala Sekolah, Guru, Tenaga Kependidikan, dll.)
-  subject: string;  // Mata pelajaran atau Bidang Tugas
-  image: string;    // URL ke foto guru di Supabase Storage
-  instagram_url?: string; // URL profil Instagram (opsional)
-  display_order?: number; // Opsional untuk pengurutan, bisa null atau tidak ada
-  created_at?: string; // Dari Supabase
+  position: string; 
+  subject: string;  
+  image: string;    
+  instagram_url?: string; 
+  display_order?: number; 
+  created_at?: string; 
+}
+
+// BARU: Tipe untuk data Video YouTube
+export interface YouTubeVideo {
+  id: string; // UUID dari Supabase
+  title: string;
+  youtube_embed_url: string; // URL embed dari YouTube
+  description?: string;
+  display_order?: number; // Sesuai dengan SERIAL di SQL, bisa di-handle sebagai opsional di form
+  created_at?: string;
 }

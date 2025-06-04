@@ -9,14 +9,16 @@ import AnnouncementsPage from "./pages/Announcements";
 import AnnouncementDetail from "./pages/AnnouncementDetail";
 import { AnnouncementsProvider } from "./contexts/AnnouncementsContext";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
-import { TeachersProvider } from "./contexts/TeachersContext"; // <-- BARU
+import { TeachersProvider } from "./contexts/TeachersContext";
+import { YouTubeVideosProvider } from "./contexts/YouTubeVideosContext"; // <-- BARU
 
 // Admin Pages
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ManageAnnouncements from "./pages/admin/ManageAnnouncements";
-import ManageTeachers from "./pages/admin/ManageTeachers"; // <-- BARU
+import ManageTeachers from "./pages/admin/ManageTeachers";
+import ManageYouTubeVideos from "./pages/admin/ManageYouTubeVideos"; // <-- BARU
 
 const queryClient = new QueryClient();
 
@@ -30,31 +32,34 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
       <AnnouncementsProvider>
-        <TeachersProvider> {/* <-- BARU */}
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/pengumuman" element={<AnnouncementsPage />} />
-                <Route path="/pengumuman/:announcementId" element={<AnnouncementDetail />} />
-                
-                <Route path="/admin/login" element={<AdminLogin />} />
-                <Route path="/admin" element={<ProtectedRoute />}>
-                  <Route element={<AdminLayout />}>
-                    <Route index element={<AdminDashboard />} />
-                    <Route path="dashboard" element={<AdminDashboard />} />
-                    <Route path="pengumuman" element={<ManageAnnouncements />} />
-                    <Route path="guru" element={<ManageTeachers />} /> {/* <-- BARU */}
+        <TeachersProvider>
+          <YouTubeVideosProvider> {/* <-- BARU */}
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/pengumuman" element={<AnnouncementsPage />} />
+                  <Route path="/pengumuman/:announcementId" element={<AnnouncementDetail />} />
+                  
+                  <Route path="/admin/login" element={<AdminLogin />} />
+                  <Route path="/admin" element={<ProtectedRoute />}>
+                    <Route element={<AdminLayout />}>
+                      <Route index element={<AdminDashboard />} />
+                      <Route path="dashboard" element={<AdminDashboard />} />
+                      <Route path="pengumuman" element={<ManageAnnouncements />} />
+                      <Route path="guru" element={<ManageTeachers />} />
+                      <Route path="video" element={<ManageYouTubeVideos />} /> {/* <-- BARU */}
+                    </Route>
                   </Route>
-                </Route>
 
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </TooltipProvider>
-        </TeachersProvider> {/* <-- BARU */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
+            </TooltipProvider>
+          </YouTubeVideosProvider> {/* <-- BARU */}
+        </TeachersProvider>
       </AnnouncementsProvider>
     </AuthProvider>
   </QueryClientProvider>

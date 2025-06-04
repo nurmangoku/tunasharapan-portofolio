@@ -6,6 +6,7 @@ import Teachers from '../components/Teachers';
 import SPMB from '../components/SPMB';
 import Reviews from '../components/Reviews';
 import Footer from '../components/Footer';
+import YouTubeSection from '../components/YouTubeSection';
 
 const Index = () => {
   return (
@@ -15,6 +16,7 @@ const Index = () => {
         <Hero />
         <Profile />
         <Teachers />
+        <YouTubeSection />
         <SPMB />
         <Reviews />
       </main>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { LogOut, LayoutDashboard, Newspaper, Users, BookOpen, MessageSquare, Settings, Building2, ChevronDown, ChevronUp } from 'lucide-react';
+import { LogOut, LayoutDashboard, Newspaper, Users, Video, BookOpen, MessageSquare, Settings, Building2, ChevronDown, ChevronUp } from 'lucide-react'; // Ditambahkan ikon Video
 
 const AdminLayout: React.FC = () => {
   const { logout, user } = useAuth();
@@ -10,22 +10,15 @@ const AdminLayout: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
 
   const handleLogout = async () => {
-    try {
-      await logout();
-      navigate('/admin/login');
-    } catch (error) {
-      console.error("Logout error:", error);
-    }
+    try { await logout(); navigate('/admin/login'); } 
+    catch (error) { console.error("Logout error:", error); }
   };
 
   const navItems = [
     { name: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
     { name: 'Pengumuman', path: '/admin/pengumuman', icon: Newspaper },
-    { name: 'Guru', path: '/admin/guru', icon: Users }, // <-- BARU
-    // { name: 'Profil Sekolah', path: '/admin/profil-sekolah', icon: Building2 },
-    // { name: 'SPMB', path: '/admin/spmb', icon: BookOpen },
-    // { name: 'Review', path: '/admin/review', icon: MessageSquare },
-    // { name: 'Kontak', path: '/admin/kontak', icon: Settings },
+    { name: 'Guru', path: '/admin/guru', icon: Users },
+    { name: 'Video', path: '/admin/video', icon: Video }, // <-- BARU
   ];
 
   return (
@@ -41,20 +34,15 @@ const AdminLayout: React.FC = () => {
         fixed md:sticky md:top-0 h-screen shadow-lg z-30 
         transform md:transform-none transition-transform duration-300 ease-in-out
         ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
-        md:translate-x-0 
-        overflow-y-auto
+        md:translate-x-0 overflow-y-auto
       `}>
         <div className="text-2xl font-semibold text-center hidden md:block">Admin Panel</div>
         <nav className="space-y-1 mt-4 md:mt-0">
           {navItems.map(item => (
-            <Link
-              key={item.name}
-              to={item.path}
-              onClick={() => setIsMobileMenuOpen(false)}
+            <Link key={item.name} to={item.path} onClick={() => setIsMobileMenuOpen(false)}
               className={`flex items-center px-3 py-2.5 rounded-md text-gray-300 hover:bg-gray-700 hover:text-white transition-colors duration-150
                 ${location.pathname.startsWith(item.path) ? 'bg-gray-700 text-white font-semibold' : ''}
-              `}
-            >
+              `}>
               <item.icon size={20} className="mr-3 flex-shrink-0" />
               {item.name}
             </Link>
@@ -62,22 +50,14 @@ const AdminLayout: React.FC = () => {
         </nav>
         <div className="absolute bottom-6 left-0 right-0 px-6">
            {user && <p className="text-xs text-gray-400 mb-2 truncate">Login sebagai: {user.email}</p>}
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center justify-center bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 px-4 rounded-md transition duration-150 ease-in-out"
-          >
-            <LogOut size={18} className="mr-2" />
-            Logout
+          <button onClick={handleLogout}
+            className="w-full flex items-center justify-center bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 px-4 rounded-md transition duration-150 ease-in-out">
+            <LogOut size={18} className="mr-2" /> Logout
           </button>
         </div>
       </aside>
       <main className="flex-1 p-6 md:p-10 overflow-y-auto">
-        {isMobileMenuOpen && (
-          <div 
-            className="fixed inset-0 bg-black opacity-50 z-20 md:hidden" 
-            onClick={() => setIsMobileMenuOpen(false)}
-          ></div>
-        )}
+        {isMobileMenuOpen && <div className="fixed inset-0 bg-black opacity-50 z-20 md:hidden" onClick={() => setIsMobileMenuOpen(false)}></div>}
         <Outlet />
       </main>
     </div>
