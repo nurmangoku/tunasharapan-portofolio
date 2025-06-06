@@ -25,12 +25,50 @@ export interface Teacher {
   created_at?: string; 
 }
 
-// BARU: Tipe untuk data Video YouTube
 export interface YouTubeVideo {
-  id: string; // UUID dari Supabase
+  id: string; 
   title: string;
-  youtube_embed_url: string; // URL embed dari YouTube
+  youtube_embed_url: string; 
   description?: string;
-  display_order?: number; // Sesuai dengan SERIAL di SQL, bisa di-handle sebagai opsional di form
+  display_order?: number;
   created_at?: string;
+}
+
+// BARU: Tipe untuk fitur progres siswa
+export interface Subject {
+  id: string;
+  created_at?: string;
+  name: string;
+  short_name?: string;
+}
+
+export interface AcademicReport {
+  id: string;
+  created_at?: string;
+  class_name: string;
+  semester: 'Ganjil' | 'Genap';
+  academic_year: string;
+  uploaded_by?: string;
+  description?: string;
+}
+
+export interface StudentGrade {
+  id: string;
+  created_at?: string;
+  report_id: string;
+  student_nisn: string;
+  student_name: string;
+  grades: Record<string, number>; // Contoh: { "Matematika": 90, "PAI": 88 }
+  notes?: string;
+}
+
+// Tipe untuk hasil pencarian publik
+export interface StudentProgressResult {
+  student_nisn: string;
+  student_name: string;
+  class_name: string;
+  semester: string;
+  academic_year: string;
+  grades: Record<string, number>;
+  notes?: string;
 }

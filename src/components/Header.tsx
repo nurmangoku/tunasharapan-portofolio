@@ -44,14 +44,15 @@ const Header = () => {
   };
 
   const menuItems = [
-    { label: 'Beranda', type: 'scroll', pathOrId: 'home' },
-    { label: 'Profil Sekolah', type: 'scroll', pathOrId: 'profile' },
-    { label: 'Guru', type: 'scroll', pathOrId: 'teachers' },
-    { label: 'Pengumuman', type: 'link', pathOrId: '/pengumuman' }, // <-- BARU: Item menu pengumuman
-    { label: 'SPMB', type: 'scroll', pathOrId: 'spmb' },
-    { label: 'Review', type: 'scroll', pathOrId: 'reviews' },
-    { label: 'Kontak', type: 'scroll', pathOrId: 'contact' },
-  ] as const; // Menggunakan 'as const' untuk type safety yang lebih baik
+    { label: 'Beranda', type: 'scroll' as const, pathOrId: 'home' },
+    { label: 'Profil Sekolah', type: 'scroll' as const, pathOrId: 'profile' },
+    { label: 'Guru', type: 'scroll' as const, pathOrId: 'teachers' },
+    { label: 'Pengumuman', type: 'link' as const, pathOrId: '/pengumuman' },
+    { label: 'Cek Progres', type: 'link' as const, pathOrId: '/progres-siswa' }, // <-- BARU
+    { label: 'SPMB', type: 'scroll' as const, pathOrId: 'spmb' },
+    { label: 'Review', type: 'scroll' as const, pathOrId: 'reviews' },
+    { label: 'Kontak', type: 'scroll' as const, pathOrId: 'contact' },
+  ];
 
   // Menentukan apakah header harus transparan atau tidak
   // Transparan jika di beranda DAN belum di-scroll ATAU menu mobile terbuka

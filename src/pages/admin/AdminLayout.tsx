@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { LogOut, LayoutDashboard, Newspaper, Users, Video, BookOpen, MessageSquare, Settings, Building2, ChevronDown, ChevronUp } from 'lucide-react'; // Ditambahkan ikon Video
+import { LogOut, LayoutDashboard, Newspaper, Users, Video, BookOpen, MessageSquare, Settings, Building2, ChevronDown, ChevronUp, FileText, Book } from 'lucide-react'; // Ditambahkan ikon Video
 
 const AdminLayout: React.FC = () => {
   const { logout, user } = useAuth();
@@ -18,7 +18,9 @@ const AdminLayout: React.FC = () => {
     { name: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
     { name: 'Pengumuman', path: '/admin/pengumuman', icon: Newspaper },
     { name: 'Guru', path: '/admin/guru', icon: Users },
-    { name: 'Video', path: '/admin/video', icon: Video }, // <-- BARU
+    { name: 'Video', path: '/admin/video', icon: Video },
+    { name: 'Mata Pelajaran', path: '/admin/mapel', icon: Book }, // <-- BARU
+    { name: 'Laporan Nilai', path: '/admin/laporan-nilai', icon: FileText }, // <-- BARU
   ];
 
   return (
