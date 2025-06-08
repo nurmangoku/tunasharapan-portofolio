@@ -104,14 +104,14 @@ const Footer = () => {
                 <Facebook className="w-5 h-5" />
               </a>
               <a
-                href="#" // Ganti dengan link Instagram Anda
+                href="https://www.instagram.com/sdnth_cmh?igsh=NXR0dnFhNm13OXZu" // Ganti dengan link Instagram Anda
                 aria-label="Instagram SDN Tunas Harapan"
                 className="bg-pink-600 hover:bg-pink-700 p-3 rounded-full transition-colors transform hover:scale-110"
               >
                 <Instagram className="w-5 h-5" />
               </a>
               <a
-                href="#" // Ganti dengan link Youtube Anda
+                href="https://www.youtube.com/@Localholic" // Ganti dengan link Youtube Anda
                 aria-label="Youtube SDN Tunas Harapan"
                 className="bg-red-600 hover:bg-red-700 p-3 rounded-full transition-colors transform hover:scale-110"
               >
