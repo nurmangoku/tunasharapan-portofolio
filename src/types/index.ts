@@ -34,7 +34,6 @@ export interface YouTubeVideo {
   created_at?: string;
 }
 
-// BARU: Tipe untuk fitur progres siswa
 export interface Subject {
   id: string;
   created_at?: string;
@@ -58,11 +57,12 @@ export interface StudentGrade {
   report_id: string;
   student_nisn: string;
   student_name: string;
-  grades: Record<string, number>; // Contoh: { "Matematika": 90, "PAI": 88 }
+  grades: Record<string, number>;
   notes?: string;
+  attendance?: { Sakit: number; Izin: number; Alpa: number; };
+  attitude?: 'Amat Baik' | 'Baik' | 'Cukup' | string;
 }
 
-// Tipe untuk hasil pencarian publik
 export interface StudentProgressResult {
   student_nisn: string;
   student_name: string;
@@ -71,4 +71,6 @@ export interface StudentProgressResult {
   academic_year: string;
   grades: Record<string, number>;
   notes?: string;
+  attendance?: { Sakit: number; Izin: number; Alpa: number; };
+  attitude?: string;
 }

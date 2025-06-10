@@ -1,45 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import { Link, useNavigate, useLocation } from 'react-router-dom'; // <-- MODIFIKASI: Tambahkan useLocation
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); // <-- BARU: Untuk mengetahui path saat ini
+  const location = useLocation(); 
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20); // Sedikit lebih besar agar transisi lebih jelas
+      setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll);
-    // Panggil handleScroll sekali saat mount untuk set state awal jika halaman sudah di-scroll
     handleScroll(); 
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const handleNavigation = (type: 'scroll' | 'link', pathOrId: string) => {
-    setIsMenuOpen(false); // Tutup menu mobile setelah klik
+    setIsMenuOpen(false);
     if (type === 'scroll') {
       if (location.pathname !== '/') {
-        // Jika tidak di beranda, navigasi dulu ke beranda baru scroll
         navigate('/');
         setTimeout(() => {
           const element = document.getElementById(pathOrId);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        }, 100); // Beri waktu untuk navigasi
+          if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
       } else {
-        // Jika sudah di beranda, langsung scroll
         const element = document.getElementById(pathOrId);
-        if (element) {
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+        if (element) element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     } else if (type === 'link') {
       navigate(pathOrId);
-      window.scrollTo(0, 0); // Scroll ke atas halaman saat navigasi link
+      window.scrollTo(0, 0);
     }
   };
 
@@ -53,9 +46,7 @@ const Header = () => {
     { label: 'Review', type: 'scroll' as const, pathOrId: 'reviews' },
     { label: 'Kontak', type: 'scroll' as const, pathOrId: 'contact' },
   ];
-
-  // Menentukan apakah header harus transparan atau tidak
-  // Transparan jika di beranda DAN belum di-scroll ATAU menu mobile terbuka
+  
   const isTransparent = location.pathname === '/' && !isScrolled && !isMenuOpen;
 
   return (
@@ -65,14 +56,13 @@ const Header = () => {
         : 'bg-white/95 backdrop-blur-lg shadow-lg'
     }`}>
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 md:h-20"> {/* Tinggi header disesuaikan */}
+        <div className="flex items-center justify-between h-16 md:h-20">
           <Link to="/" onClick={() => handleNavigation('link', '/')} className={`text-xl sm:text-2xl font-bold transition-colors duration-300 ${
             isTransparent ? 'text-white' : 'text-gray-900'
           }`}>
             SDN Tunas Harapan
           </Link>
           
-          {/* Desktop Menu */}
           <nav className="hidden md:flex space-x-6 lg:space-x-8">
             {menuItems.map((item) => (
               <button
@@ -89,17 +79,15 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* Mobile Menu Button */}
           <button
             className={`md:hidden transition-colors duration-300 ${isTransparent ? 'text-white' : 'text-gray-700'}`}
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu" // Untuk aksesibilitas
+            aria-label="Toggle menu"
           >
             {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
 
-        {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden bg-white/95 backdrop-blur-lg absolute top-full left-0 right-0 mx-0 rounded-b-lg shadow-lg p-4 border-t border-gray-200">
             <nav className="flex flex-col space-y-2">

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { LogOut, LayoutDashboard, Newspaper, Users, Video, BookOpen, MessageSquare, Settings, Building2, ChevronDown, ChevronUp, FileText, Book } from 'lucide-react'; // Ditambahkan ikon Video
+import { LogOut, LayoutDashboard, Newspaper, Users, Video, Book, FileText, ChevronDown, ChevronUp } from 'lucide-react';
 
 const AdminLayout: React.FC = () => {
   const { logout, user } = useAuth();

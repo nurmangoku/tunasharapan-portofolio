@@ -28,7 +28,6 @@ const ManageReports: React.FC = () => {
         setIsSubmitting(true);
         setStatusMessage(null);
 
-        // Langkah 1: Buat record laporan akademik baru
         const { data: reportData, error: reportError } = await supabase
             .from('academic_reports')
             .insert({ class_name: className, semester, academic_year: academicYear })
@@ -36,15 +35,12 @@ const ManageReports: React.FC = () => {
             .single();
 
         if (reportError || !reportData) {
-            console.error("Error creating report:", reportError);
             setStatusMessage({ type: 'error', message: `Gagal membuat laporan: ${reportError?.message}` });
             setIsSubmitting(false);
             return;
         }
-
         const reportId = reportData.id;
 
-        // Langkah 2: Parse CSV dan siapkan data nilai siswa
         Papa.parse(csvFile, {
             header: true,
             skipEmptyLines: true,
@@ -52,16 +48,18 @@ const ManageReports: React.FC = () => {
                 const subjectNames = subjects.map(s => s.name);
                 const studentGradesData = results.data.map((row: any) => {
                     const grades: Record<string, number> = {};
-                    
-                    // Cocokkan header CSV dengan daftar mata pelajaran
                     for (const header in row) {
                         if (subjectNames.includes(header)) {
                              const score = parseFloat(row[header]);
-                            if (!isNaN(score)) {
-                                grades[header] = score;
-                            }
+                            if (!isNaN(score)) grades[header] = score;
                         }
                     }
+
+                    const attendance = {
+                        Sakit: parseInt(row.Sakit || row.sakit || '0', 10),
+                        Izin: parseInt(row.Izin || row.izin || '0', 10),
+                        Alpa: parseInt(row.Alpa || row.alpa || '0', 10),
+                    };
 
                     return {
                         report_id: reportId,
@@ -69,36 +67,32 @@ const ManageReports: React.FC = () => {
                         student_name: row.Nama || row.nama,
                         grades,
                         notes: row.Catatan || row.catatan || undefined,
+                        attendance,
+                        attitude: row.Sikap || row.sikap || undefined,
                     };
                 }).filter(student => student.student_nisn && student.student_name);
 
                 if (studentGradesData.length === 0) {
-                    setStatusMessage({ type: 'error', message: 'Tidak ada data siswa yang valid ditemukan di file CSV. Pastikan header CSV (NISN, Nama, dan nama mata pelajaran) sudah benar.' });
+                    setStatusMessage({ type: 'error', message: 'Tidak ada data siswa yang valid. Pastikan header CSV (NISN, Nama, Sikap, Sakit, Izin, Alpa, dan nama mapel) sudah benar.' });
                     setIsSubmitting(false);
                     await supabase.from('academic_reports').delete().eq('id', reportId);
                     return;
                 }
-
-                // Langkah 3: Insert data nilai siswa ke Supabase
-                const { error: gradesError } = await supabase
-                    .from('student_grades')
-                    .insert(studentGradesData);
+                
+                const { error: gradesError } = await supabase.from('student_grades').insert(studentGradesData);
 
                 if (gradesError) {
-                    console.error("Error inserting student grades:", gradesError);
                     setStatusMessage({ type: 'error', message: `Gagal mengunggah data nilai: ${gradesError.message}` });
                     await supabase.from('academic_reports').delete().eq('id', reportId);
                 } else {
                     setStatusMessage({ type: 'success', message: `Berhasil! Laporan untuk ${className} dengan ${studentGradesData.length} data siswa telah diunggah.` });
-                    setClassName('');
-                    setCsvFile(null);
+                    setClassName(''); setCsvFile(null);
                     const fileInput = document.getElementById('csv-file-input') as HTMLInputElement;
                     if(fileInput) fileInput.value = "";
                 }
                 setIsSubmitting(false);
             },
             error: (err) => {
-                console.error("Error parsing CSV:", err);
                 setStatusMessage({ type: 'error', message: `Gagal mem-parsing file CSV: ${err.message}` });
                 setIsSubmitting(false);
                 supabase.from('academic_reports').delete().eq('id', reportId);
@@ -146,7 +140,7 @@ const ManageReports: React.FC = () => {
                             </div>
                         </div>
                         <p className="mt-2 text-xs text-gray-500">
-                            Pastikan header CSV: `NISN`, `Nama`, dan nama mata pelajaran yang sesuai (contoh: `PAI`, `Matematika`). Kolom `Catatan` bersifat opsional.
+                            Header CSV: `NISN`, `Nama`, `Sikap`, `Sakit`, `Izin`, `Alpa`, dan nama mata pelajaran (contoh: `Matematika`). Kolom `Catatan` opsional.
                         </p>
                     </div>
                     <button type="submit" disabled={isSubmitting} 
