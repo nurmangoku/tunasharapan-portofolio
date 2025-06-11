@@ -72,7 +72,7 @@ const YouTubeSection: React.FC = () => {
         {videos.length > 3 && (
              <div className="text-center mt-12">
                 <a 
-                    href="https://www.youtube.com/@NamaChannelAnda" // GANTI DENGAN LINK CHANNEL YOUTUBE SEKOLAH ANDA
+                    href="https://www.youtube.com/@Localholic" // GANTI DENGAN LINK CHANNEL YOUTUBE SEKOLAH ANDA
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-red-600 hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
