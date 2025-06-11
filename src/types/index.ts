@@ -74,3 +74,14 @@ export interface StudentProgressResult {
   attendance?: { Sakit: number; Izin: number; Alpa: number; };
   attitude?: string;
 }
+
+export interface StudentBlogPost {
+  id: string;
+  created_at?: string;
+  title: string;
+  content: string;
+  author_name: string;
+  cover_image_url?: string;
+  published_at?: string;
+  slug: string;
+}

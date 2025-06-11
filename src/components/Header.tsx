@@ -41,7 +41,8 @@ const Header = () => {
     { label: 'Profil Sekolah', type: 'scroll' as const, pathOrId: 'profile' },
     { label: 'Guru', type: 'scroll' as const, pathOrId: 'teachers' },
     { label: 'Pengumuman', type: 'link' as const, pathOrId: '/pengumuman' },
-    { label: 'Cek Kemajuan Siswa', type: 'link' as const, pathOrId: '/progres-siswa' }, // <-- BARU
+    { label: 'Cek Kemajuan Siswa', type: 'link' as const, pathOrId: '/progres-siswa' }, 
+    { label: 'Blog Siswa', type: 'link' as const, pathOrId: '/blog' }, 
     { label: 'SPMB', type: 'scroll' as const, pathOrId: 'spmb' },
     { label: 'Review', type: 'scroll' as const, pathOrId: 'reviews' },
     { label: 'Kontak', type: 'scroll' as const, pathOrId: 'contact' },

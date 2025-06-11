@@ -2,16 +2,14 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import MetaTags from '../components/MetaTags'; // <-- BARU
 import { ArrowLeft, Share2, CalendarDays } from 'lucide-react';
-import { useAnnouncements } from '../contexts/AnnouncementsContext'; // <-- BARU: Impor hook
+import { useAnnouncements } from '../contexts/AnnouncementsContext';
 
-// sampleAnnouncements dihapus dari sini, karena akan diambil dari context
-
-const AnnouncementDetail = () => {
+const AnnouncementDetail: React.FC = () => {
   const { announcementId } = useParams<{ announcementId: string }>();
-  const { getAnnouncementById } = useAnnouncements(); // <-- BARU: Gunakan hook
+  const { getAnnouncementById } = useAnnouncements();
   
-  // Pastikan announcementId tidak undefined sebelum memanggil getAnnouncementById
   const announcement = announcementId ? getAnnouncementById(announcementId) : undefined;
 
   React.useEffect(() => {
@@ -27,24 +25,9 @@ const AnnouncementDetail = () => {
         title: `Pengumuman SDN Tunas Harapan: ${announcement.title}`,
         text: textToShare,
         url: shareUrl,
-      })
-      .then(() => console.log('Berhasil dibagikan'))
-      .catch((error) => {
-        console.log('Gagal membagikan:', error);
-        alert(`Salin dan bagikan tautan ini:\n${textToShare}`);
       });
     } else {
-      try {
-        const dummy = document.createElement('textarea');
-        document.body.appendChild(dummy);
-        dummy.value = textToShare;
-        dummy.select();
-        document.execCommand('copy');
-        document.body.removeChild(dummy);
-        alert(`Tautan pengumuman telah disalin ke clipboard:\n${announcement.title}`);
-      } catch (err) {
-        alert(`Bagikan pengumuman ini:\n${textToShare}`);
-      }
+      alert(`Bagikan link ini: ${shareUrl}`);
     }
   };
 
@@ -65,8 +48,19 @@ const AnnouncementDetail = () => {
     );
   }
 
+  // Siapkan data untuk meta tags
+  const pageUrl = window.location.href;
+  const description = announcement.content ? announcement.content.substring(0, 155) + '...' : "Informasi terbaru dari SDN Tunas Harapan";
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
+      <MetaTags 
+        title={announcement.title}
+        description={description}
+        imageUrl={announcement.image || 'https://i.ibb.co/bF05sMh/sekolah.jpg'} // Ganti dengan URL gambar default Anda
+        url={pageUrl}
+      />
+
       <Header />
       <main className="pt-20 flex-grow">
         <section className="py-12 md:py-16">
@@ -77,22 +71,20 @@ const AnnouncementDetail = () => {
                 Kembali ke Semua Pengumuman
               </Link>
             </div>
+
             <article className="bg-white rounded-xl shadow-xl overflow-hidden">
-              <img 
-                src={announcement.image}
-                alt={`Gambar untuk ${announcement.title}`}
-                className="w-full h-64 md:h-80 object-cover"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement;
-                  target.onerror = null;
-                  target.src = 'https://placehold.co/800x400/E2E8F0/4A5568?text=Gambar+Tidak+Tersedia';
-                }}
-              />
+              {announcement.image && (
+                <img 
+                  src={announcement.image} 
+                  alt={`Gambar untuk ${announcement.title}`}
+                  className="w-full h-auto max-h-[500px] object-cover"
+                />
+              )}
               <div className="p-6 md:p-8">
                 <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{announcement.title}</h1>
                 <div className="flex items-center text-gray-500 text-sm mb-6">
                   <CalendarDays size={18} className="mr-2" />
-                  <span>Dipublikasikan pada: {announcement.date}</span>
+                  <span>Dipublikasikan pada: {announcement.date ? new Date(announcement.date).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric'}) : ''}</span>
                 </div>
                 <div 
                   className="prose prose-lg max-w-none text-gray-700 leading-relaxed" 

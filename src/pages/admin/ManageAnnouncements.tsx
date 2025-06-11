@@ -2,94 +2,57 @@ import React, { useState } from 'react';
 import { useAnnouncements } from '../../contexts/AnnouncementsContext';
 import AnnouncementForm from '../../components/admin/AnnouncementForm';
 import { Announcement } from '../../types';
-// FIX: Tambahkan Image as ImageIcon ke impor lucide-react
-import { PlusCircle, Edit3, Trash2, RefreshCw, Eye, Image as ImageIcon } from 'lucide-react'; 
+import { PlusCircle, Edit3, Trash2, RefreshCw, Eye, Image as ImageIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const ManageAnnouncements: React.FC = () => {
   const { 
-    announcements, 
-    addAnnouncement, 
-    updateAnnouncement, 
-    deleteAnnouncement, 
-    loading: contextLoading, 
-    error: contextError,
-    fetchAnnouncements 
+    announcements, addAnnouncement, updateAnnouncement, deleteAnnouncement, 
+    loading: contextLoading, error: contextError, fetchAnnouncements 
   } = useAnnouncements();
   
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [editingAnnouncement, setEditingAnnouncement] = useState<Announcement | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
-  const [isSubmittingForm, setIsSubmittingForm] = useState(false); 
+  const [isSubmittingForm, setIsSubmittingForm] = useState(false);
 
-  const handleAddClick = () => {
-    setEditingAnnouncement(null);
-    setIsFormVisible(true);
-    setFormError(null);
-  };
-
-  const handleEditClick = (announcement: Announcement) => {
-    setEditingAnnouncement(announcement);
-    setIsFormVisible(true);
-    setFormError(null);
-  };
-
+  const handleAddClick = () => { setEditingAnnouncement(null); setIsFormVisible(true); setFormError(null); };
+  const handleEditClick = (announcement: Announcement) => { setEditingAnnouncement(announcement); setIsFormVisible(true); setFormError(null); };
   const handleDeleteClick = async (id: string, title: string) => {
-    if (window.confirm(`Apakah Anda yakin ingin menghapus pengumuman "${title}"? Gambar terkait (jika ada) juga akan dihapus dari penyimpanan.`)) {
-      try {
-        await deleteAnnouncement(id);
-      } catch (err) {
-        console.error("Error deleting:", err);
-        alert("Gagal menghapus pengumuman.");
-      }
+    if (window.confirm(`Yakin ingin menghapus pengumuman "${title}"? Gambar terkait juga akan dihapus.`)) {
+      try { await deleteAnnouncement(id); } catch (err) { alert("Gagal menghapus pengumuman."); }
     }
   };
-
   const handleSubmitForm = async (formData: Omit<Announcement, 'id' | 'created_at' | 'link'>) => {
-    setFormError(null);
-    setIsSubmittingForm(true); 
+    setFormError(null); setIsSubmittingForm(true);
     try {
-      if (editingAnnouncement) {
-        await updateAnnouncement(editingAnnouncement.id, formData);
-      } else {
-        await addAnnouncement(formData);
-      }
-      setIsFormVisible(false);
-      setEditingAnnouncement(null);
-    } catch (err: any) {
-      console.error("Error submitting form:", err);
-      setFormError(err.message || "Terjadi kesalahan saat menyimpan data.");
-    } finally {
-      setIsSubmittingForm(false); 
-    }
+      if (editingAnnouncement) await updateAnnouncement(editingAnnouncement.id, formData);
+      else await addAnnouncement(formData);
+      setIsFormVisible(false); setEditingAnnouncement(null);
+    } catch (err: any) { setFormError(err.message || "Terjadi kesalahan."); } 
+    finally { setIsSubmittingForm(false); }
   };
-  
-  const handleRefresh = async () => {
-    await fetchAnnouncements();
-  }
+  const handleRefresh = async () => await fetchAnnouncements();
 
-  if (contextLoading && announcements.length === 0) {
-    return <div className="text-center py-10">Memuat data pengumuman...</div>;
-  }
+  if (contextLoading && announcements.length === 0) return <div className="text-center py-10">Memuat data pengumuman...</div>;
 
   return (
     <div className="space-y-8">
+      {/* ... JSX header halaman ... */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">Kelola Pengumuman</h1>
         <div className="flex space-x-2">
             <button
                 onClick={handleRefresh}
-                disabled={contextLoading || isSubmittingForm} 
+                disabled={contextLoading || isSubmittingForm}
                 className="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-3 sm:px-4 rounded-lg transition duration-150 ease-in-out flex items-center disabled:opacity-50"
-                title="Muat Ulang Data"
-            >
+                title="Muat Ulang Data">
                 <RefreshCw size={18} className={contextLoading && !isSubmittingForm ? "animate-spin" : ""} />
                 <span className="hidden sm:inline ml-2">Refresh</span>
             </button>
             <button
                 onClick={handleAddClick}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-3 sm:px-4 rounded-lg transition duration-150 ease-in-out flex items-center"
-            >
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-3 sm:px-4 rounded-lg transition duration-150 ease-in-out flex items-center">
                 <PlusCircle size={18} className="mr-0 sm:mr-2" />
                 <span className="hidden sm:inline">Tambah Baru</span>
             </button>
@@ -99,23 +62,12 @@ const ManageAnnouncements: React.FC = () => {
       {isFormVisible && (
         <div className="p-4 sm:p-6 border border-gray-200 rounded-xl bg-gray-50 shadow-md">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-semibold text-gray-700">
-              {editingAnnouncement ? 'Edit Pengumuman' : 'Tambah Pengumuman Baru'}
-            </h2>
-            <button 
-                onClick={() => { setIsFormVisible(false); setEditingAnnouncement(null); setFormError(null); }}
-                className="text-sm text-gray-500 hover:text-gray-700"
-                title="Tutup Form"
-            >
-                &times; Tutup
-            </button>
+            <h2 className="text-xl font-semibold text-gray-700">{editingAnnouncement ? 'Edit Pengumuman' : 'Tambah Pengumuman Baru'}</h2>
+            <button onClick={() => { setIsFormVisible(false); setEditingAnnouncement(null); setFormError(null); }}
+              className="text-sm text-gray-500 hover:text-gray-700" title="Tutup Form">&times; Tutup</button>
           </div>
           {formError && <p className="text-red-600 bg-red-100 p-3 rounded-md mb-4 text-sm border border-red-300">{formError}</p>}
-          <AnnouncementForm 
-            onSubmit={handleSubmitForm} 
-            initialData={editingAnnouncement}
-            isSubmittingOverall={isSubmittingForm}
-          />
+          <AnnouncementForm onSubmit={handleSubmitForm} initialData={editingAnnouncement} isSubmittingOverall={isSubmittingForm} />
         </div>
       )}
 
