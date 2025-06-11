@@ -4,7 +4,8 @@ import { supabase } from '../lib/supabaseClient';
 
 interface StudentProgressContextType {
   searchResults: StudentProgressResult[];
-  searchProgress: (searchTerm: string) => Promise<void>;
+  // FIX: Mengubah signature fungsi searchProgress
+  searchProgress: (nisn: string, studentName: string) => Promise<void>;
   clearResults: () => void;
   loading: boolean;
   error: Error | null;
@@ -17,17 +18,19 @@ export const StudentProgressProvider: React.FC<{ children: ReactNode }> = ({ chi
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const searchProgress = useCallback(async (searchTerm: string) => {
-    if (!searchTerm.trim()) {
+  const searchProgress = useCallback(async (nisn: string, studentName: string) => {
+    // FIX: Memeriksa kedua input
+    if (!nisn.trim() || !studentName.trim()) {
       setSearchResults([]);
       return;
     }
     setLoading(true);
     setError(null);
     try {
-      // Memanggil fungsi RPC di Supabase
-      const { data, error: rpcError } = await supabase.rpc('search_student_progress', {
-        search_term: searchTerm.trim()
+      // FIX: Memanggil fungsi RPC yang baru dengan dua parameter
+      const { data, error: rpcError } = await supabase.rpc('search_student_progress_secure', {
+        nisn_param: nisn.trim(),
+        name_param: studentName.trim()
       });
 
       if (rpcError) throw rpcError;
