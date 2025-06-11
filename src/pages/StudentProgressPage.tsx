@@ -3,12 +3,9 @@ import { useStudentProgress } from '../contexts/StudentProgressContext';
 import { StudentProgressResult } from '../types';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
-// FIX: Mengganti ShieldWarning dengan ShieldAlert
 import { Search, Loader2, Frown, Info, AlertTriangle, Sparkles, Star, TrendingUp, CheckCircle, ShieldAlert } from 'lucide-react'; 
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d'];
-
+// Komponen untuk Analisis AI
 const AIAnalysisDisplay: React.FC<{ result: StudentProgressResult }> = ({ result }) => {
     const [analysis, setAnalysis] = useState<string>('');
     const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
@@ -19,21 +16,21 @@ const AIAnalysisDisplay: React.FC<{ result: StudentProgressResult }> = ({ result
             setIsAnalyzing(true);
             setAnalysisError(null);
             
-            const prompt = `Anda adalah perwakilan dari sekolah SDN Tunas Harapan yang memberikan analisis laporan kemajuan belajar siswa. Tugas Anda adalah membuat analisis dalam format naratif yang mudah dipahami oleh orang tua. Nada tulisan harus positif, suportif, dan membangun, dengan fokus pada pertumbuhan siswa. Gunakan kata ganti "kami" saat merujuk pada pihak sekolah.
+            // FIX: Prompt diubah untuk menganonimkan data pribadi
+            const prompt = `
+Anda adalah perwakilan dari sekolah SDN Tunas Harapan yang memberikan analisis laporan kemajuan belajar siswa. Tugas Anda adalah membuat analisis dalam format naratif yang mudah dipahami oleh orang tua. Nada tulisan harus positif, suportif, dan membangun, dengan fokus pada pertumbuhan siswa. Gunakan kata ganti "kami" saat merujuk pada pihak sekolah dan "ananda" saat merujuk pada siswa. Jangan sebutkan nama atau NISN siswa.
 
-**Data Siswa:**
-- Nama: ${result.student_name}
-- NISN: ${result.student_nisn}
-- Laporan: Kelas ${result.class_name}, Semester ${result.semester}, Tahun Ajaran ${result.academic_year}
+**Data Akademik Siswa:**
+- Laporan Konteks: Kelas ${result.class_name}, Semester ${result.semester}, Tahun Ajaran ${result.academic_year}
 - Nilai Mata Pelajaran (JSON): ${JSON.stringify(result.grades)}
 - Data Kehadiran (jumlah hari, JSON): ${JSON.stringify(result.attendance || {})}
 - Penilaian Sikap: ${result.attitude || 'Tidak ada data'}
 - Catatan Wali Kelas: ${result.notes || 'Tidak ada'}
 
 **Struktur Analisis yang Diinginkan (gunakan format Markdown):**
-1.  **Ringkasan Umum:** Awali dengan ringkasan singkat dan positif tentang performa umum siswa di semester ini, sebutkan penilaian sikapnya.
-2.  **Kekuatan Akademik:** Identifikasi 2-3 mata pelajaran dengan nilai tertinggi. Jelaskan bahwa siswa menunjukkan kekuatan dan pemahaman yang sangat baik di bidang ini. Berikan pujian.
-3.  **Area yang Perlu Ditingkatkan:** Identifikasi 1-2 mata pelajaran dengan nilai terendah. Gunakan bahasa yang suportif, seperti "area yang bisa menjadi fokus untuk ditingkatkan" atau "potensi untuk tumbuh lebih jauh", bukan "kelemahan" atau "nilai buruk".
+1.  **Ringkasan Umum:** Awali dengan ringkasan singkat dan positif tentang performa umum ananda di semester ini, sebutkan penilaian sikapnya.
+2.  **Kekuatan Akademik:** Identifikasi 2 mata pelajaran dengan nilai tertinggi. Jelaskan bahwa ananda menunjukkan kekuatan dan pemahaman yang sangat baik di bidang ini. Berikan pujian.
+3.  **Area yang Perlu Ditingkatkan:** Identifikasi 1 mata pelajaran dengan nilai terendah. Gunakan bahasa yang suportif, seperti "area yang bisa menjadi fokus untuk ditingkatkan" atau "potensi untuk tumbuh lebih jauh", bukan "kelemahan" atau "nilai buruk".
 4.  **Analisis Kehadiran & Sikap:** Jika ada data absensi 'Alpa' > 0, hubungkan secara halus dengan performa belajar. Contoh: "Mempertahankan kehadiran penuh akan sangat membantu ananda dalam memahami pelajaran secara konsisten." Jika sikapnya "Cukup", berikan saran lembut untuk lebih aktif atau fokus di kelas.
 5.  **Saran Konstruktif:** Berikan 2-3 saran konkret dan dapat ditindaklanjuti.
 6.  **Penutup yang Memotivasi:** Akhiri dengan kalimat yang positif dan memotivasi dari pihak sekolah.`;
@@ -42,6 +39,7 @@ const AIAnalysisDisplay: React.FC<{ result: StudentProgressResult }> = ({ result
                 const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
                 if (!apiKey) throw new Error("Kunci API Gemini tidak ditemukan.");
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                
                 const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
                 const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 if (!response.ok) { const errorBody = await response.text(); throw new Error(`Permintaan API gagal dengan status ${response.status}: ${errorBody}`); }
@@ -55,6 +53,7 @@ const AIAnalysisDisplay: React.FC<{ result: StudentProgressResult }> = ({ result
             } catch (err: any) { setAnalysisError(err.message || "Gagal menghasilkan analisis AI."); } 
             finally { setIsAnalyzing(false); }
         };
+
         generateAnalysis();
     }, [result]);
 
@@ -68,17 +67,22 @@ const AIAnalysisDisplay: React.FC<{ result: StudentProgressResult }> = ({ result
     );
 };
 
+// FIX: Komponen utama untuk menampilkan semua hasil dalam satu blok, tanpa grafik atau daftar nilai
 const ProgressResultDisplay: React.FC<{ result: StudentProgressResult }> = ({ result }) => {
-    const gradesData = Object.entries(result.grades).map(([subject, score]) => ({ subject, Nilai: score }));
-    const averageScore = gradesData.length > 0 ? gradesData.reduce((acc, curr) => acc + curr.Nilai, 0) / gradesData.length : 0;
+    const gradesData = Object.entries(result.grades);
+    const averageScore = gradesData.length > 0 ? gradesData.reduce((acc, [, score]) => acc + score, 0) / gradesData.length : 0;
+
     return (
         <div className="bg-white p-6 md:p-8 rounded-2xl shadow-xl mt-8 animate-fade-in">
+            {/* FIX: Header laporan diubah menjadi anonim */}
             <div className="border-b pb-4 mb-6">
-                <h2 className="text-3xl font-bold text-gray-800">{result.student_name}</h2>
-                <p className="text-gray-600">NISN: {result.student_nisn}</p>
-                <p className="text-gray-500 text-sm mt-1">{`Laporan Kelas ${result.class_name} - Semester ${result.semester} ${result.academic_year}`}</p>
+                <h2 className="text-3xl font-bold text-gray-800">Laporan Kemajuan Belajar Ananda</h2>
+                <p className="text-gray-500 text-sm mt-1">{`Laporan untuk Kelas ${result.class_name} - Semester ${result.semester} ${result.academic_year}`}</p>
             </div>
+
+            {/* Konten Utama */}
             <div className="space-y-8">
+                {/* Bagian Ringkasan */}
                 <div className="space-y-4">
                     <h3 className="text-xl font-semibold text-gray-700">Ringkasan Laporan</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -90,13 +94,17 @@ const ProgressResultDisplay: React.FC<{ result: StudentProgressResult }> = ({ re
                         <div className="pt-2"><h4 className="font-semibold text-gray-700">Catatan dari Wali Kelas:</h4><p className="text-gray-600 italic mt-1 bg-yellow-50 p-3 rounded-lg border border-yellow-200">"{result.notes}"</p></div>
                     )}
                 </div>
+
+                {/* Bagian Analisis AI */}
                 <AIAnalysisDisplay result={result} />
             </div>
         </div>
     );
 };
 
+
 const StudentProgressPage: React.FC = () => {
+    // FIX: State untuk dua input
     const [nisn, setNisn] = useState('');
     const [studentName, setStudentName] = useState('');
     const [hasSearched, setHasSearched] = useState(false);
@@ -106,7 +114,7 @@ const StudentProgressPage: React.FC = () => {
 
     const handleSearch = (e: FormEvent) => {
         e.preventDefault();
-        setHasSearched(true);
+        setHasSearched(true); 
         if (nisn.trim() && studentName.trim()) {
             searchProgress(nisn.trim(), studentName.trim());
         } else {
@@ -130,7 +138,6 @@ const StudentProgressPage: React.FC = () => {
                         <div className="mt-10 max-w-xl mx-auto">
                             <div className="bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 p-6 rounded-r-lg mb-8 shadow-md">
                                 <div className="flex">
-                                    {/* FIX: Menggunakan ShieldAlert */}
                                     <div className="py-1"><ShieldAlert className="h-6 w-6 text-yellow-500 mr-4"/></div>
                                     <div>
                                         <p className="font-bold text-lg">⚠️ Disclaimer</p>
